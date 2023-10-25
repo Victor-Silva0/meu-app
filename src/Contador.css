@@ -1,0 +1,57 @@
+.total
+        {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            display: inline-block;
+            padding: 6px;
+            margin-top: 1rem;
+            border: 2px solid black;
+            border-radius: 5px;
+            margin-left: 50%;
+        }
+        #total {
+            text-align: center;
+        }
+        #espaco {
+            margin-left: 42%;
+        }
+        .container {
+            display: flex;
+        }
+        .homem {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6px;
+            margin-top: 1rem;
+            border: 2px solid black;
+            border-radius: 5px;
+        }
+        .mulher {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6px;
+            margin-top: 1rem;
+            border: 2px solid black;
+            border-radius: 5px;
+            
+        }
+        .pessoa {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6px;
+            margin-top: 1rem;
+            border: 2px solid black;
+            border-radius: 5px;
+        }
+
+        .column {
+            display: inline-block;
+            border: 1px solid black;
+            padding: 1rem 1rem;
+            vertical-align: middle;
+        }
