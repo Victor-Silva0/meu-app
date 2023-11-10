@@ -6,6 +6,9 @@ import React, { Profiler } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
+import PackingList from "./PackingList";
+import List from "./List";
+import TeaGathering from "./Teaparty";
 
 function Atv03() {
     return (
@@ -15,6 +18,12 @@ function Atv03() {
                 <Profile />
                 <hr></hr>
                 <TodoList />
+                <hr></hr>
+                <PackingList />
+                <hr></hr>
+                <List />
+                <hr></hr>
+                <TeaGathering />
             </React.StrictMode>
           <Link to="/">Retornar para a página inicial</Link>
       </>

@@ -14,7 +14,7 @@ export default function Profile() {
             <Avatar
             size={200}
             person={{
-                name: 'Adam Savage',
+                name: 'Katsuko Saruhashi',
                 imageId: 'YfeOqp2'
             }}
             />
