@@ -16,7 +16,10 @@ const Calculator = () => {
         return prev + el;
       });
     } else {
-      setSecondValue((prev) => prev + el);
+      setSecondValue((prev) => {
+        setResultValue(prev + el);
+        return prev + el;
+      });
     }
   };
 
@@ -24,7 +27,7 @@ const Calculator = () => {
     return () => {
       setSign(value);
       setIsFirstValue(true);
-      setResultValue('0'); // Reset resultValue when a sign button is clicked
+      setResultValue('0');
     };
   };
 
@@ -43,7 +46,7 @@ const Calculator = () => {
     setFirstValue(result.toString());
     setSecondValue('');
     checkResultLength();
-    setIsFirstValue(false); // Reset isFirstValue after calculation
+    setIsFirstValue(false);
   };
 
   const checkResultLength = () => {
