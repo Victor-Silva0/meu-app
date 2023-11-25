@@ -18,6 +18,7 @@ html, body #fullheight {
     display: flex;
     justify-content: flex-end;
     align-items: flex-end;
+    background-color: black;
     color: white;
     height: 39%;
 }
@@ -84,7 +85,7 @@ html, body #fullheight {
     border: none;
 }
 
-.selectedsigh {
+.selectedSign {
     background-color: white;
     color: #ff9f0a;
 }

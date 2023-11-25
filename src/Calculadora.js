@@ -1,200 +1,164 @@
+import React, { useState } from 'react';
 import './Calculadora.css';
 
-export default function calc() {
-    return (
-        <div className="calc">
+const Calculator = () => {
+  const [firstValue, setFirstValue] = useState('');
+  const [isFirstValue, setIsFirstValue] = useState(false);
+  const [secondValue, setSecondValue] = useState('');
+  const [isSecondValue, setIsSecondValue] = useState(false);
+  const [sign, setSign] = useState('');
+  const [resultValue, setResultValue] = useState('0');
 
-        <div className="container">
-  <div className="result">
-    <span>0</span>
-  </div>
-  <div className="buttons">
-    <button className="item item1 clear">AC</button>
-    <button className="item item1 negative" value="*-1">
-      +/-
-    </button>
-    <button className="item percent sign" value="%">
-      %
-    </button>
-    <button className="item item3 sign" value="/">
-      /
-    </button>
-    <button className="item numbers" value={7}>
-      7
-    </button>
-    <button className="item numbers" value={8}>
-      8
-    </button>
-    <button className="item numbers" value={9}>
-      9
-    </button>
-    <button className="item item3 sign" value="x">
-      X
-    </button>
-    <button className="item numbers" value={4}>
-      4
-    </button>
-    <button className="item numbers" value={5}>
-      5
-    </button>
-    <button className="item numbers" value={6}>
-      6
-    </button>
-    <button className="item item3 sign" value="-">
-      -
-    </button>
-    <button className="item numbers" value={1}>
-      1
-    </button>
-    <button className="item numbers" value={2}>
-      2
-    </button>
-    <button className="item numbers" value={3}>
-      3
-    </button>
-    <button className="item item3 sign" value="+">
-      +
-    </button>
-    <button className="item itemZero numbers" value={0}>
-      0
-    </button>
-    <button className="item comma">,</button>
-    <button className="item item3 equals">=</button>
-  </div>
-</div>
-
-
-
-const numbers = document.querySelectorAll('.numbers');
-const result = document.querySelector('.result span');
-const signs = document.querySelectorAll('.sign');
-const equals = document.querySelector('.equals');
-const clear = document.querySelector(".clear");
-const negative = document.querySelector('.negative');
-const percent = document.querySelector(".percent");
-const comma = document.querySelector(".comma");
-
-let firstValue = "";
-let isFirstValue = false;
-let secondValue = "";
-let isSecondValue = false;
-let sign = "";
-let resultValue = 0;
-
-</div>
-);
-for(let i = 0; i < numbers.length; i++) {
-    numbers[i].addEventListener('click', (e) => {
-        let atr = e.target.getAttribute('value');
-        if(isFirstValue === false) {
-            getFirstValue(atr)
-        }
-        if(isSecondValue == false) {
-            getSecondValue(atr);
-        }
-    })
-}
-
-function getFirstValue(el) {
-    result.innerHTML = "";
-    firstValue += el;
-    result.innerHTML = firstValue;
-    firstValue = +firstValue;
-}
-
-function getSecondValue(el) {
-    if(firstValue != "" && sign != "") {
-        secondValue += el;
-        result.innerHTML = secondValue;
-        secondValue = +secondValue;
+  const handleNumberClick = (el) => {
+    if (!isFirstValue || (isFirstValue && !isSecondValue)) {
+      setFirstValue((prev) => {
+        setResultValue(prev + el);
+        return prev + el;
+      });
     }
-}
+    if (isFirstValue && !isSecondValue) {
+      setSecondValue((prev) => prev + el);
+    }
+  };
 
-function getSign() {
-    for(let i = 0; i < signs.length; i++) {
-        signs[i].addEventListener('click', (e) => {
-            sign = e.target.getAttribute('value');
-            isFirstValue = true;
-        })
-    }
-}
-getSign();
+  const getSign = (value) => {
+    return () => {
+      setSign(value);
+      setIsFirstValue(true);
+      console.log('Sign:', value);
+    };
+  };
 
-equals.addEventListener('click', () => {
-    result.innerHTML = "";
-    if(sign === "+") {
-        resultValue = firstValue + secondValue;
+  const handleEqualsClick = () => {
+    console.log('Before Calculation:', firstValue, sign, secondValue);
+  
+    let result = 0;
+    if (sign === '+') {
+      result = parseFloat(firstValue) + parseFloat(secondValue);
+    } else if (sign === '-') {
+      result = parseFloat(firstValue) - parseFloat(secondValue);
+    } else if (sign === 'x') {
+      result = parseFloat(firstValue) * parseFloat(secondValue);
+    } else if (sign === '/') {
+      result = parseFloat(firstValue) / parseFloat(secondValue);
     }
-    else if(sign === "-") {
-        resultValue = firstValue - secondValue;
-    }
-    else if(sign === "x") {
-        resultValue = firstValue * secondValue;
-    }
-    else if(sign === "/") {
-        resultValue = firstValue / secondValue;
-    }
-    result.innerHTML = resultValue;
-    firstValue = resultValue;
-    secondValue = "";
-    
+  
+    console.log('After Calculation:', result);
+  
+    setResultValue(result.toString());
+    setFirstValue(result.toString());
+    setSecondValue('');
     checkResultLength();
-})
+  };
 
-function checkResultLength() {
-    resultValue = JSON.stringify(resultValue);
-    
-    if(resultValue.length >= 8 )
-    {
-        resultValue = JSON.parse(resultValue);
-        result.innerHTML = resultValue.toFixed(5);
+  const checkResultLength = () => {
+    if (resultValue.includes('.') && resultValue.split('.')[1].length > 5) {
+      setResultValue(parseFloat(resultValue).toFixed(5));
     }
-}
+  };
 
-negative.addEventListener('click', () => {
-    result.innerHTML = "";
-    if(firstValue != "") {
-        resultValue = -firstValue;
-        firstValue = resultValue;
+  const handleNegativeClick = () => {
+    if (firstValue !== '') {
+      setFirstValue((prev) => (parseFloat(prev) * -1).toString());
     }
-    if(firstValue != "" && secondValue != "" && sign != "") {
-        resultValue = -resultValue;
+    if (firstValue !== '' && secondValue !== '' && sign !== '') {
+      setSecondValue((prev) => (parseFloat(prev) * -1).toString());
     }
-    result.innerHTML = resultValue;
-})
+  };
 
-percent.addEventListener('click', () => {
-    result.innerHTML = "";
-    if(firstValue != "") {
-        resultValue = firstValue / 100;
-        firstValue = resultValue;
+  const handlePercentClick = () => {
+    if (firstValue !== '') {
+      setFirstValue((parseFloat(firstValue) / 100).toString());
     }
-    if(firstValue != "" && secondValue != "" && sign != "") {
-        resultValue = resultValue / 100;
+    if (firstValue !== '' && secondValue !== '' && sign !== '') {
+      setSecondValue((prev) => (parseFloat(prev) / 100).toString());
     }
-    result.innerHTML = resultValue;
-})
+  };
 
-comma.addEventListener('click', () => {
-    result.innerHTML = "";
-    if(firstValue != "") {
-        resultValue = firstValue + ".";
-        firstValue = resultValue;
+  const handleCommaClick = () => {
+    if (!firstValue.includes('.') && !isFirstValue) {
+      setFirstValue((prev) => prev + '.');
     }
-    if(firstValue != "" && secondValue != "" && sign != "") {
-        resultValue = resultValue + ".";
+    if (!secondValue.includes('.') && secondValue !== '' && !isSecondValue) {
+      setSecondValue((prev) => prev + '.');
     }
-    result.innerHTML = resultValue;
-})
+  };
 
-clear.addEventListener('click', () => {
-    result.innerHTML = 0;
-    
-    firstValue = "";
-    isFirstValue = false;
-    secondValue = "";
-    isSecondValue = false;
-    sign = "";
-    resultValue = 0;
-})
-}
+  const handleClearClick = () => {
+    setFirstValue('');
+    setIsFirstValue(false);
+    setSecondValue('');
+    setIsSecondValue(false);
+    setSign('');
+    setResultValue('0');
+  };
+
+  return (
+    <div className="calculator">
+      <div className="result">
+      <span>{parseFloat(resultValue)}</span>
+      </div>
+      <div className="buttons">
+        <button className="item item1 clear" onClick={handleClearClick}>
+          AC
+        </button>
+        <button className="item item1 negative" onClick={handleNegativeClick}>
+          +/-
+        </button>
+        <button className="item percent sign" onClick={handlePercentClick}>
+          %
+        </button>
+        <button className="item item3 sign" onClick={getSign('/')}>
+          /
+        </button>
+        <button className="item numbers" onClick={() => handleNumberClick('7')}>
+          7
+        </button>
+        <button className="item numbers" onClick={() => handleNumberClick('8')}>
+          8
+        </button>
+        <button className="item numbers" onClick={() => handleNumberClick('9')}>
+          9
+        </button>
+        <button className="item item3 sign" onClick={getSign('x')}>
+          X
+        </button>
+        <button className="item numbers" onClick={() => handleNumberClick('4')}>
+          4
+        </button>
+        <button className="item numbers" onClick={() => handleNumberClick('5')}>
+          5
+        </button>
+        <button className="item numbers" onClick={() => handleNumberClick('6')}>
+          6
+        </button>
+        <button className="item item3 sign" onClick={getSign('-')}>
+          -
+        </button>
+        <button className="item numbers" onClick={() => handleNumberClick('1')}>
+          1
+        </button>
+        <button className="item numbers" onClick={() => handleNumberClick('2')}>
+          2
+        </button>
+        <button className="item numbers" onClick={() => handleNumberClick('3')}>
+          3
+        </button>
+        <button className="item item3 sign" onClick={getSign('+')}>
+          +
+        </button>
+        <button className="item itemZero numbers" onClick={() => handleNumberClick('0')}>
+          0
+        </button>
+        <button className="item comma" onClick={handleCommaClick}>
+          ,
+        </button>
+        <button className="item item3 equals" onClick={handleEqualsClick}>
+          =
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default Calculator;
