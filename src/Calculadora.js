@@ -10,13 +10,12 @@ const Calculator = () => {
   const [resultValue, setResultValue] = useState('0');
 
   const handleNumberClick = (el) => {
-    if (!isFirstValue || (isFirstValue && !isSecondValue)) {
+    if (!sign) {
       setFirstValue((prev) => {
         setResultValue(prev + el);
         return prev + el;
       });
-    }
-    if (isFirstValue && !isSecondValue) {
+    } else {
       setSecondValue((prev) => prev + el);
     }
   };
@@ -25,13 +24,11 @@ const Calculator = () => {
     return () => {
       setSign(value);
       setIsFirstValue(true);
-      console.log('Sign:', value);
+      setResultValue('0'); // Reset resultValue when a sign button is clicked
     };
   };
 
   const handleEqualsClick = () => {
-    console.log('Before Calculation:', firstValue, sign, secondValue);
-  
     let result = 0;
     if (sign === '+') {
       result = parseFloat(firstValue) + parseFloat(secondValue);
@@ -42,13 +39,11 @@ const Calculator = () => {
     } else if (sign === '/') {
       result = parseFloat(firstValue) / parseFloat(secondValue);
     }
-  
-    console.log('After Calculation:', result);
-  
     setResultValue(result.toString());
     setFirstValue(result.toString());
     setSecondValue('');
     checkResultLength();
+    setIsFirstValue(false); // Reset isFirstValue after calculation
   };
 
   const checkResultLength = () => {
@@ -59,19 +54,37 @@ const Calculator = () => {
 
   const handleNegativeClick = () => {
     if (firstValue !== '') {
-      setFirstValue((prev) => (parseFloat(prev) * -1).toString());
+      setFirstValue((prev) => {
+        const newValue = (parseFloat(prev) * -1).toString();
+        setResultValue(newValue);
+        return newValue;
+      });
     }
+  
     if (firstValue !== '' && secondValue !== '' && sign !== '') {
-      setSecondValue((prev) => (parseFloat(prev) * -1).toString());
+      setSecondValue((prev) => {
+        const newValue = (parseFloat(prev) * -1).toString();
+        setResultValue(newValue);
+        return newValue;
+      });
     }
   };
 
   const handlePercentClick = () => {
     if (firstValue !== '') {
-      setFirstValue((parseFloat(firstValue) / 100).toString());
+      setFirstValue((prev) => {
+        const newValue = (parseFloat(prev) / 100).toString();
+        setResultValue(newValue);
+        return newValue;
+      });
     }
+  
     if (firstValue !== '' && secondValue !== '' && sign !== '') {
-      setSecondValue((prev) => (parseFloat(prev) / 100).toString());
+      setSecondValue((prev) => {
+        const newValue = (parseFloat(prev) / 100).toString();
+        setResultValue(newValue);
+        return newValue;
+      });
     }
   };
 
