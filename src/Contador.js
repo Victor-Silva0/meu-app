@@ -13,7 +13,7 @@ export default function Contador() {
     <div>
       <h1 id="total">Total</h1>
       <h1 className="total">{totalCount}</h1> {}
-      <div className="container">
+      <div className="containerC">
         <div id="espaco" className="column">
           <img src={man} alt="Homem" />
           <p></p>
